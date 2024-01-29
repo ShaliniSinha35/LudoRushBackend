@@ -1,9 +1,11 @@
+const { v4: uuidv4 } = require('uuid');
+
 const Room = require('../models/Room');
 
 const rooms = [];
 
-function createRoom(data) {
-  const room = new Room(data);
+function createRoom() {
+  const room = new Room({ id: uuidv4() });
   rooms.push(room);
   return room;
 }
@@ -11,7 +13,7 @@ function createRoom(data) {
 function joinRoom(data,socketId) {
   let roomToJoin = rooms.find((room) => !room.isFull());
   if (!roomToJoin) {
-    roomToJoin = createRoom({ id: rooms.length + 1 }); // Generate room ID as needed
+    roomToJoin = createRoom(); // Generate room ID as needed
   }
   roomToJoin.addUser(data.user,socketId);
   return roomToJoin;

@@ -21,10 +21,15 @@ io.on('connection', (socket) => {
 
 
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "ludo",
+  // host: "localhost",
+  // user: "root",
+  // password: "",
+  // database: "ludo",
+
+   host: "119.18.54.135",
+  user: "mclinpll_cureofine",
+  password: "BRLN,GC4*WXT",
+  database: "mclinpll_cureofine_db",
 });
 
 
@@ -41,46 +46,48 @@ app.post("/signup", (req, res) => {
   var phone = req.body.phone;
 
 
-  var sql = `INSERT INTO signup (uname, mobileNumber) VALUES ("${name}", "${phone}")`
+var sql = `INSERT INTO web_user (name, mobile) VALUES ("${name}", "${phone}")`
   connection.query(sql, function (err, result) {
     if (err) throw err;
-    else {
-      console.log("record inserted");
-      return res.send(result)
+    else{
+        console.log("record inserted");
+        return res.send(result)
     }
-
+   
   });
 });
 
 app.get("/getUserData", (req, res) => {
-  console.log("104", req.query.userId)
-
-  const userId = req.query.userId;
-  console.log(userId)
-  const sql = `SELECT uid, uname, mobileNumber,status FROM signup WHERE mobileNumber = ? `;
-  connection.query(sql, [userId], function (err, result) {
-    if (err) throw err;
-    else {
-
-      return res.send(result)
-    }
-
+  console.log("104",req.query.userId)
+   
+    const userId = req.query.userId;
+    console.log(userId)
+    const sql = `SELECT id, name, mobile FROM web_user WHERE mobile = ? `;
+    connection.query(sql,[userId] ,function (err, result) {
+      if (err) throw err;
+      else{
+   
+          return res.send(result)
+      }
+  
+    });
   });
-});
-
-app.get("/verify", (req, res) => {
 
 
-  const userId = req.query.userId;
+ app.get("/verify", (req, res) => {
+   
+     
+      const userId = req.query.userId;
+      console.log("76",userId)
 
-  const sql = `SELECT uid, uname, mobileNumber,status FROM signup WHERE mobileNumber = ${userId} `;
-  connection.query(sql, function (err, result) {
-    if (err) throw err;
-    else {
-      return res.send(result)
-    }
-
-  });
+      const sql = `SELECT id, name, mobile,status FROM web_user WHERE mobile = ${userId} `;
+      connection.query(sql,function (err, result) {
+        if (err) throw err;
+        else{
+            return res.send(result)
+        }
+    
+      });
 });
 
 
@@ -89,14 +96,14 @@ app.post("/changeStatus", (req, res) => {
 
   const userId = req.query.userId;
 
-  var sql = `INSERT INTO signup (status) VALUES ("active") WHERE mobileNumber = ?`;
-  connection.query(sql, [userId], function (err, result) {
+var sql = `INSERT INTO web_user (status) VALUES ("active") WHERE mobile = ?`;
+  connection.query(sql, [userId],function (err, result) {
     if (err) throw err;
-    else {
-      console.log("status changed");
-      return res.send(result)
+    else{
+        console.log("status changed");
+        return res.send(result)
     }
-
+   
   });
 });
 
@@ -106,5 +113,3 @@ const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-
