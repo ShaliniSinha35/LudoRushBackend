@@ -19,7 +19,7 @@ class Room {
 
 
   addUser(user,socketId) {
-    if (!this.isFull()) {
+if (!this.isFull() &&  !this.users.includes(user)  ) {
   
       this.users.push(user);
       this.sockets.push(socketId);
