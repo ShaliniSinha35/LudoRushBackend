@@ -19,7 +19,9 @@ function handleConnection(socket, io) {
     if (room.users.length === 2 && room.users.includes(data.user)) {
       io.to(room.id).emit('startTwoPlayerGame', room);
       io.to(room.sockets[0]).emit('getTurn', true);
+      io.to(room.sockets[0]).emit('color', "blue");
       io.to(room.sockets[1]).emit('getTurn', false);
+      io.to(room.sockets[1]).emit('color', "yellow");
       // startTurnTimer(room.sockets[0], room.sockets[1]); // Start timer for the first player
     }
 
@@ -65,3 +67,6 @@ function handleConnection(socket, io) {
 }
 
 module.exports = { handleConnection };
+
+
+
