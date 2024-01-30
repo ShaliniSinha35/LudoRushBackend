@@ -19,7 +19,6 @@ io.on('connection', (socket) => {
 });
 
 
-
 const connection = mysql.createConnection({
   // host: "localhost",
   // user: "root",
