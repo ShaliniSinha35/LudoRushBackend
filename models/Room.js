@@ -3,13 +3,7 @@ class Room {
     this.id = data.id;
     this.users = [];
     this.sockets=[];
-    // this.timerData = {
-    //   BLUE: null,
-    //   YELLOW: null,
-    //   // Add timer data for other colors as needed
-    // };
-
-    // Other properties as needed
+   
   }
 
   isFull() {
@@ -19,25 +13,10 @@ class Room {
 
 
   addUser(user,socketId) {
-if (!this.isFull() &&  !this.users.includes(user)  ) {
+    if (!this.isFull() &&  !this.users.includes(user)  ) {
   
       this.users.push(user);
       this.sockets.push(socketId);
-
-          // Set timer data when a user joins
-
-          // if(this.users.length == 1){
-          //   this.timerData[BLUE] = {
-          //     timerId: null,
-          //     remainingTime: 15000, // Initial time in milliseconds
-          //   };
-          // }
-          // else{
-          //   this.timerData[YELLOW] = {
-          //     timerId: null,
-          //     remainingTime: 15000, // Initial time in milliseconds
-          //   };
-          // }
 
 
     // Handle logic when adding users to the room
