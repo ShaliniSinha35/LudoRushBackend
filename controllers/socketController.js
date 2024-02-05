@@ -57,6 +57,14 @@ function handleConnection(socket, io) {
       io.to(room.id).emit('broadcastGameState', { gameState: gameState });
     });
 
+
+
+        socket.on('updateDiceNumber', (diceNumber) => {
+      // Broadcast the updated diceNumber to all clients except the sender
+      io.to(room.id).emit('diceNumberUpdated', diceNumber);
+  });
+
+
     socket.on('changeTurn', (data) => {
       const { currentPlayer, nextPlayer, dicenumber, extrachance, bonusCount } = data;
       console.log(dicenumber,extrachance, bonusCount, currentPlayer, nextPlayer)
