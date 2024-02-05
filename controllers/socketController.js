@@ -32,6 +32,7 @@ function handleConnection(socket, io) {
          
     
         var RoboNumber = Math.floor(Math.random() * 9000000000) + 1000000000;
+            RoboNumber = parseInt('9' + RoboNumber.toString().substring(1));
           roomManagement.joinRoom({ user: RoboNumber }, "ROBOT");
           io.to(room.id).emit('roomStatus', room, {});
 
