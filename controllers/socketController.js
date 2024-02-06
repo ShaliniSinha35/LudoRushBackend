@@ -17,7 +17,7 @@ function handleConnection(socket, io) {
 
     io.to(room.id).emit('roomStatus', room);
 
-    if (room.users.length === 2 && room.users.includes(data.user)) {
+    if (room.users.length === 2 && room.users.includes(data.user) && room.sockets.length == 2) {
       io.to(room.id).emit('startTwoPlayerGame', room);
       io.to(room.sockets[0]).emit('getTurn', true);
       io.to(room.sockets[0]).emit('color', "blue");
