@@ -3,6 +3,7 @@ const roomManagement = require('../utils/roomManagement');
 function handleConnection(socket, io) {
   console.log("4", socket.id);
   let timerId;
+    let diceNumber = 1;
   socket.on('joinRoom', (data) => {
     console.log(data);
 
@@ -75,6 +76,10 @@ function handleConnection(socket, io) {
 
 
   
+    socket.on('roll_dice', () => {
+      diceNumber = Math.floor(Math.random() * 6) + 1;
+      io.to(room.id).emit('dice_roll_result', diceNumber);
+    });
   
  
   });
