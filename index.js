@@ -25,7 +25,7 @@ const connection = mysql.createConnection({
   // user: "root",
   // password: "",
   // database: "ludo",
-
+  connectionLimit: 10,
    host:"119.18.54.135",
    user:"mclinpll_ludo_user",
    password:"!2MRVcTj4SeB",
@@ -46,23 +46,17 @@ const connection = mysql.createConnection({
 
 
 function handleDisconnect() {
-  connection.connect((err) => {
+  connection.getConnection((err, connection) => {
     if (err) {
-      console.error('Error connecting to MySQL:', err);
+      console.error('Error getting MySQL connection:', err);
       setTimeout(handleDisconnect, 2000);
     } else {
-      console.log("Connected to MySQL");
+      console.log('Connected to MySQL');
+    
+      connection.release();
     }
   });
 
-  connection.on('error', (err) => {
-    console.error('MySQL connection error:', err);
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-      handleDisconnect();
-    } else {
-      throw err;
-    }
-  });
 }
 
 handleDisconnect();
