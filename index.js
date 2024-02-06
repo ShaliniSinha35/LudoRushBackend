@@ -20,7 +20,7 @@ io.on('connection', (socket) => {
 
 
 
-const connection = mysql..createPool({
+const connection = mysql.createPool({
   // host: "localhost",
   // user: "root",
   // password: "",
