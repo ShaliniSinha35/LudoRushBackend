@@ -78,6 +78,7 @@ function handleConnection(socket, io) {
   
     socket.on('roll_dice', () => {
       diceNumber = Math.floor(Math.random() * 6) + 1;
+      console.log(diceNumber)
       io.to(room.id).emit('dice_roll_result', diceNumber);
     });
   
