@@ -32,20 +32,40 @@ const connection = mysql.createConnection({
   database:"mclinpll_ludo",
 
 
-// Db Name : mclinpll_ludo
-// Password :   =aRrT=j(oPvO
-// User Name:  	mclinpll_ludo_user
-// Host : 119.18.54.135
+
 });
 
 
-connection.connect((err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("connected");
-  }
-});
+// connection.connect((err) => {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log("connected");
+//   }
+// });
+
+
+function handleDisconnect() {
+  connection.connect((err) => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      setTimeout(handleDisconnect, 2000);
+    } else {
+      console.log("Connected to MySQL");
+    }
+  });
+
+  connection.on('error', (err) => {
+    console.error('MySQL connection error:', err);
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      handleDisconnect();
+    } else {
+      throw err;
+    }
+  });
+}
+
+handleDisconnect();
 
 app.post("/signup", (req, res) => {
   var name = req.body.name;
