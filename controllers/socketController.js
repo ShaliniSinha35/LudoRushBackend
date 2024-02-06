@@ -51,7 +51,7 @@ function handleConnection(socket, io) {
       
         }
         clearTimeout(timerId); // Clear the timer
-      }, 50000); // 30 seconds
+      }, 40000); // 30 seconds
     }
 
     socket.on('updateGameState', (gameState) => {
