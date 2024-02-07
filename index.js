@@ -31,8 +31,6 @@ const connection = mysql.createPool({
    password:"!2MRVcTj4SeB",
   database:"mclinpll_ludo",
 
-
-
 });
 
 
