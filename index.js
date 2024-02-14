@@ -21,15 +21,18 @@ io.on('connection', (socket) => {
 
 
 const connection = mysql.createPool({
-  // host: "localhost",
-  // user: "root",
-  // password: "",
-  // database: "ludo",
+
   connectionLimit: 10,
    host:"119.18.54.135",
    user:"mclinpll_ludo_user",
    password:"!2MRVcTj4SeB",
   database:"mclinpll_ludo",
+
+
+    // host: "localhost",
+  // user: "root",
+  // password: "",
+  // database: "ludo",
 
 });
 
