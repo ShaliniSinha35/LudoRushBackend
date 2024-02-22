@@ -3,7 +3,7 @@ const roomManagement = require('../utils/roomManagement');
 function handleConnection(socket, io) {
   console.log("4", socket.id);
   let timerId;
-    let diceNumber = 1;
+  let diceNumber = 1;
   socket.on('joinRoom', (data) => {
     console.log(data);
 
@@ -18,11 +18,13 @@ function handleConnection(socket, io) {
     io.to(room.id).emit('roomStatus', room);
 
     if (room.users.length === 2 && room.users.includes(data.user) && room.sockets.length == 2) {
+
       io.to(room.id).emit('startTwoPlayerGame', room);
       io.to(room.sockets[0]).emit('getTurn', true);
       io.to(room.sockets[0]).emit('color', "blue");
       io.to(room.sockets[1]).emit('getTurn', false);
       io.to(room.sockets[1]).emit('color', "yellow");
+      
       // startTurnTimer(room.sockets[0], room.sockets[1]); // Start timer for the first player
     }
 
@@ -33,7 +35,7 @@ function handleConnection(socket, io) {
          
     
         var RoboNumber = Math.floor(Math.random() * 9000000000) + 1000000000;
-            RoboNumber = parseInt('9' + RoboNumber.toString().substring(1));
+        RoboNumber = parseInt('9' + RoboNumber.toString().substring(1));
           roomManagement.joinRoom({ user: RoboNumber }, "ROBOT");
           io.to(room.id).emit('roomStatus', room, {});
 
@@ -51,20 +53,17 @@ function handleConnection(socket, io) {
       
         }
         clearTimeout(timerId); // Clear the timer
-      }, 40000); // 30 seconds
+      }, 20000); // 30 seconds
     }
 
     socket.on('updateGameState', (gameState) => {
       io.to(room.id).emit('broadcastGameState', { gameState: gameState });
     });
 
-
-
-        socket.on('updateDiceNumber', (diceNumber) => {
+    socket.on('updateDiceNumber', (diceNumber) => {
       // Broadcast the updated diceNumber to all clients except the sender
       io.to(room.id).emit('diceNumberUpdated', diceNumber);
-  });
-
+    });
 
     socket.on('changeTurn', (data) => {
       const { currentPlayer, nextPlayer, dicenumber, extrachance, bonusCount } = data;
@@ -75,13 +74,11 @@ function handleConnection(socket, io) {
     });
 
 
-  
     socket.on('roll_dice', () => {
       diceNumber = Math.floor(Math.random() * 6) + 1;
-      console.log(diceNumber)
       io.to(room.id).emit('dice_roll_result', diceNumber);
     });
-  
+
  
   });
 
@@ -103,6 +100,15 @@ function handleConnection(socket, io) {
     roomManagement.leaveRoomSocket(data.socket);
   });
 
+  socket.on('deleteRoom', (roomId) => {
+
+    // Handle the request to delete the room with the specified roomId
+    const deletedRoom = roomManagement.deleteRoom(roomId);
+    
+    // Notify clients about the room deletion
+    io.emit('roomDeleted', { roomId: deletedRoom.id });
+  });
+
   function startTurnTimer(currentPlayer, previousPlayer) {
     const timerDuration = 15000; // 15 seconds
     io.to(currentPlayer).emit('getTimer', true);
@@ -119,9 +125,13 @@ function handleConnection(socket, io) {
     // Save the timerId for potential cleanup on player move or disconnection
     // roomManagement.setPlayerTimer(currentPlayer, timerId);
   }
+
+  
 }
 
 module.exports = { handleConnection };
+
+
 
 
 
