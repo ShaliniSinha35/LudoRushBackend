@@ -31,5 +31,21 @@ function leaveRoom(userId) {
   }
 }
 
+// roomManagement.js
 
-module.exports = { createRoom, joinRoom, leaveRoom };
+// ... existing code ...
+
+function deleteRoom(roomId) {
+  const roomIndex = rooms.findIndex((room) => room.id === roomId);
+
+  if (roomIndex !== -1) {
+    const deletedRoom = rooms[roomIndex];
+    rooms.splice(roomIndex, 1);
+    
+    return deletedRoom;
+  }
+
+  return null; 
+}
+
+module.exports = { createRoom, joinRoom, leaveRoom, deleteRoom };
