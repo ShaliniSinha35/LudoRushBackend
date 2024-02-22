@@ -21,7 +21,9 @@ io.on('connection', (socket) => {
 
 
 
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
+
+  connectionLimit: 10,
   host: "localhost",
   user: "root",
   password: "",
@@ -38,36 +40,23 @@ const connection = mysql.createConnection({
 
 
 function handleDisconnect() {
-  connection.connect((err) => {
+  connection.getConnection((err, connection) => {
     if (err) {
-      console.error('Error connecting to MySQL:', err);
+      console.error('Error getting MySQL connection:', err);
       setTimeout(handleDisconnect, 2000);
     } else {
-      console.log("Connected to MySQL");
+      console.log('Connected to MySQL');
+    
+      connection.release();
     }
   });
 
-  connection.on('error', (err) => {
-    console.error('MySQL connection error:', err);
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-      handleDisconnect();
-    } else {
-      throw err;
-    }
-  });
 }
 
 handleDisconnect();
 
 
-connection.connect((err) => {
-  if (err) {
-    console.log(err);
 
-  } else {
-    console.log("connected");
-  }
-});
 
 app.post("/signup", (req, res) => {
   var name = req.body.name;
