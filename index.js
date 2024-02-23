@@ -137,10 +137,10 @@ app.post("/changeStatus", (req, res) => {
 });
 
 app.post("/updateWallet", (req, res) => {
-  const userId = req.query.userId; 
-  const wallet = req.query.wallet; 
+  const userId = req.body.userId; 
+  const wallet = req.body.wallet; 
   console.log(userId, wallet);
-
+  
   var sql = `UPDATE registration SET wallet = wallet + ? WHERE mobile = ?`;
 
   connection.query(sql, [wallet, userId], function (err, result) {
