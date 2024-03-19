@@ -108,21 +108,21 @@ app.get("/getUserData", (req, res) => {
 
 
 app.get("/verify", (req, res) => {
+    const userId = req.query.userId; // Corrected variable name
+    console.log("User ID:", userId);
 
+    const sql = `SELECT * FROM registration WHERE mobile = ${userId}` ;
+    
 
-  const userId = req.query.userId;
-  console.log("76", userId)
-
-  const sql = `SELECT id, name, mobile FROM registration WHERE mobile = ${userId}`;
-  connection.query(sql, function (err, result) {
-    if (err) throw err;
-    else {
-      // console.log("verify")
-      console.log(result)
-      return res.send(result)
-    }
-
-  });
+    connection.query(sql, function (err, result) {
+        if (err) {
+            console.log("Error executing query:", err);
+            return res.status(500).send("Error executing query");
+        } else {
+            console.log("Query result:", result);
+            return res.send(result);
+        }
+    });
 });
 
 app.post("/changeStatus", (req, res) => {
