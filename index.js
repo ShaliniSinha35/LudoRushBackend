@@ -57,6 +57,22 @@ function handleDisconnect() {
 handleDisconnect();
 
 
+app.get("/allData", (req, res) => {
+
+
+  const sql = `SELECT * FROM registration` ;
+  
+
+  connection.query(sql, function (err, result) {
+      if (err) {
+          console.log("Error executing query:", err);
+          return res.status(500).send("Error executing query");
+      } else {
+          console.log("Query result:", result);
+          return res.send(result);
+      }
+  });
+});
 
 
 app.post("/signup", (req, res) => {
