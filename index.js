@@ -8,6 +8,7 @@ const http = require('http');
 const socketIO = require('socket.io');
 const socketController = require('./controllers/socketController');
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static("public"));
