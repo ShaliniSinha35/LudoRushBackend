@@ -173,6 +173,9 @@ app.post("/updateWallet", (req, res) => {
 });
 
 
+app.get("/ludo",(req,res)=>{
+  res.send("Hello World")
+})
 
 // Start the server
 
